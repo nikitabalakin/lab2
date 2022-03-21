@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-
-
+#region Первое задание
+/*
 {
-    #region Первое задание
+    
     #region Генерация массива
     Random rng = new Random();//объявление рандома для дальнейшего использования 
     int[] mas = new int[10000];// создание массива в формате дабл, что-бы использовать дальше
@@ -186,5 +186,38 @@
     Console.WriteLine("Сортировка Шелла");
     Console.WriteLine(elapsedtimep4);//вывод затраченного времени
     #endregion
-    #endregion
+    
+}
+*/
+#endregion
+{
+    Dictionary<int, string> dict = new Dictionary<int, string>();
+    dict.Add(1, "а"); dict.Add(2, "б");
+    dict.Add(3, "в"); dict.Add(4, "г");
+    dict.Add(5, "д"); dict.Add(6, "е");
+    dict.Add(7, "ё"); dict.Add(8, "ж");
+    dict.Add(9, "з"); dict.Add(10, "и");
+    dict.Add(11, "й"); dict.Add(12, "к");
+    dict.Add(13, "л"); dict.Add(14, "м");
+    dict.Add(15, "н"); dict.Add(16, "о");
+    dict.Add(17, "п"); dict.Add(18, "р");
+    dict.Add(19, "с"); dict.Add(20, "т");
+    dict.Add(21, "у"); dict.Add(22, "ф");
+    dict.Add(23, "х"); dict.Add(24, "ц");
+    dict.Add(25, "ч"); dict.Add(26, "ш");
+    dict.Add(27, "щ"); dict.Add(28, "ъ");
+    dict.Add(29, "ы"); dict.Add(30, "ь");
+    dict.Add(31, "э"); dict.Add(32, "ю");
+    dict.Add(33, "ю"); dict.Add(34, "!");
+    dict.Add(35, "?"); dict.Add(36, ".");
+    dict.Add(37, ","); dict.Add(38, " ");
+    Console.WriteLine("Введите текст");
+    string? source_text = Console.ReadLine();
+    while (source_text == "")
+    {
+        Console.WriteLine("Текста не найдено, введите текст");
+        source_text = Console.ReadLine();
+        Console.Clear();
+    }
+    Console.WriteLine($"Введённый текст {source_text}");
 }
