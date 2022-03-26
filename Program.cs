@@ -233,6 +233,36 @@ using System.Diagnostics;
     #endregion
 
 
+    Dictionary<char, int> dict2 = new();
+    dict2.OrderBy(x => x.Value);
+
+    var order = from i in dict.Values
+                orderby i ascending
+                select i;
+
+
+    List<(int, char )> korteg1 = new List<(int , char)>();//хранить до семи типов
+    korteg1.Add((15, 'k'));//добавлять так.
+    korteg1.OrderBy(x => x.Item1);//сортировка
+
+    List<object> korteg2 = new List<object>();
+    korteg2.Add((15));
+    korteg2.Add('t');
+    korteg2.AddRange(korteg1.Cast<object>());
+    foreach(object c in korteg2)
+    {
+        Console.WriteLine(c);
+        if(c.GetType() == typeof(Int32))
+        {
+            Console.WriteLine(c.GetType().Name);
+            int? tmp = c as Int32?;
+        }
+        else
+        {
+            Console.WriteLine("Хз чё за тип");
+        }
+    }
+
 
     Console.WriteLine("Не сортированный");
     foreach (char str in not_sorted)
@@ -246,6 +276,11 @@ using System.Diagnostics;
         Console.WriteLine(v);
     }
 
+}
+public class MykeyValue
+{
+    public char Key;
+    public int Value;
 }
 
 #endregion 
