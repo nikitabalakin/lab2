@@ -194,25 +194,25 @@ using System.Diagnostics;
 
 #region второе задание
 
-namespace program
+namespace program//Пространство имён
 {
-    internal class Program
+    internal class Program//класс программы
     {
-        enum Nav_state
+        enum Nav_state//перечисление состояний
         {
-            state_base,
-            state_sorted_up,
-            state_sorted_down,
-            state_sorted_return,
-            state_sorted_work,
-            state_sorted_replace,
-            state_sorted_count
+            state_base,//базовое
+            state_sorted_up,//сортировка по возрастанию
+            state_sorted_down,//по убыванию
+            state_sorted_return,//возвращение текста
+            state_sorted_work,//рабочее состояние
+            state_sorted_replace,//замена
+            state_sorted_count//подсчет
         }
 
 
-        static void Main()
+        static void Main()//входная точка
         {
-            Nav_state state = Nav_state.state_base;
+            Nav_state state = Nav_state.state_base;//задаём статус
             #region Получение строки, и ввод её в коллекцию.
             string? source_text = Console.ReadLine();//получение строки от пользователя
             while (source_text == "" || source_text == " ")//если ничего нету или там пробел просим ввести еще раз
@@ -230,7 +230,7 @@ namespace program
 
             #region Ввод в словарь и присвоение уникального индекса.
             Dictionary<int, char> dict = new();//словарь цифра буква
-            int tmp_key = 0;
+            int tmp_key = 0;//временные переменные для заполения
             int tmp_value = 0;
             for (int i = 0; i < not_sorted.Count; i++)//начинаем цикл по длине не сортированного листа
             {
@@ -247,56 +247,56 @@ namespace program
                     tmp_value++;//увеличиваем значение на один
                 }
             }
-            tmp_key = 0;
+            tmp_key = 0;//очищаем временные переменные
             tmp_value = 0;
             Dictionary<char, int> dict2 = new();//словарь буква цифра
             for (int i = 0; i < not_sorted.Count; i++)
             {
-                if ((dict2.ContainsValue(not_sorted[i]) == true))
+                if ((dict2.ContainsValue(not_sorted[i]) == true))//если буква уже содержится нечего не делаем
                 {
                 }
-                else
+                else//если буквы нету добавляем её в словарь
                 {
-                    bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);
+                    bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);//если удалось добавить букву увеличиваем ключ на один
                     if (t == true)
                     {
                         tmp_key++;
                     }
-                    tmp_value++;
+                    tmp_value++;//увеличиваем значение
                 }
             }
 
             #endregion
 
             #region Конвертация букв в индекс
-            List<int> to_sorted = new List<int>();
-            List<int> to_output = new List<int>();
-            for (int i = 0; i < not_sorted.Count; i++)
+            List<int> to_sorted = new List<int>();//лист для сортировок
+            List<int> to_output = new List<int>();//лист для выводов
+            for (int i = 0; i < not_sorted.Count; i++)//заполняем сортировочный лист
             {
                 int value;
-                dict2.TryGetValue(not_sorted[i], out value);
-                to_sorted.Add(value);
+                dict2.TryGetValue(not_sorted[i], out value);//ловим значение из второго словаря
+                to_sorted.Add(value);//добавляем его
             }
             #endregion
 
-            while (true)
+            while (true)//вечный цикл для меню 
             {
-                switch (state)
+                switch (state)//говорим свичу ориентироваться на наш стейт
                 {
 
-                    case Nav_state.state_base:
-                        Console.Clear();
+                    case Nav_state.state_base://при базовом состоянии
+                        Console.Clear();//очищаем консоль
                         Console.WriteLine($"Оригинал: {source_text}");//выводим оригинал
                         #region Конвертация индекса в буквы и его вывод
                         Console.Write("Текущее состояние: ");
-                        to_output.Clear();
-                        for (int i = 0; i < to_sorted.Count; i++)
+                        to_output.Clear();//очищаем лист для вывода
+                        for (int i = 0; i < to_sorted.Count; i++)//заполняем лист для вывода на основе, первого словаря.
                         {
                             char value;
                             dict.TryGetValue(to_sorted[i], out value);
                             to_output.Add(value);
                         }
-                        foreach (char c in to_output)
+                        foreach (char c in to_output)//выводим лист для вывода
                         {
                             Console.Write(c);
                         }
@@ -308,82 +308,83 @@ namespace program
                         Console.WriteLine("3. Подсчет количества символов в тексте");
                         Console.WriteLine("4. Заменя символов в тексте");
                         Console.WriteLine("5. Возвращение оригинального текста.");
-                        var vibor = Console.ReadLine();
-                        if (vibor == "1") { state = Nav_state.state_sorted_up; }
+                        var vibor = Console.ReadLine();//вводим для меню
+                        if (vibor == "1") { state = Nav_state.state_sorted_up; }//на основе введдёного меняем состояние
                         else if (vibor == "2") { state = Nav_state.state_sorted_down; }
                         else if (vibor == "5") { state = Nav_state.state_sorted_return; }
                         else if (vibor == "4") { state = Nav_state.state_sorted_replace; }
                         else if (vibor == "3") { state = Nav_state.state_sorted_count; }
                         else { Console.WriteLine("Неверное значение, допустимы только 1,2,3,4"); }
-                        break;
+                        break;//выходим отсюдаво
                         
-                    case Nav_state.state_sorted_up:
+                    case Nav_state.state_sorted_up://при сортировке на возрастание
                         Console.WriteLine("Сортировка по возрастанию");
-                        to_sorted.Sort();
-                        state = Nav_state.state_base;
+                        to_sorted.Sort();//сортируем индексы
+                        state = Nav_state.state_base;//меняем стейт на базовый
                         break;
 
-                    case Nav_state.state_sorted_down:
+                    case Nav_state.state_sorted_down://при сортировке на убывание
                         Console.WriteLine("Сортировка по Убыванию");
-                        to_sorted.Sort();
-                        to_sorted.Reverse();
-                        state = Nav_state.state_base;
+                        to_sorted.Sort();//сортируем индексы 
+                        to_sorted.Reverse();//инвертируем
+                        state = Nav_state.state_base;//меняем стейт на базовый
                         break;
 
-                    case Nav_state.state_sorted_count:
-                        Dictionary<char, int> result = new Dictionary<char, int>();
+                    case Nav_state.state_sorted_count://подсчет общего количества символов
+                        Dictionary<char, int> result = new Dictionary<char, int>();//словарь для посчета кол-ва символов
                         for (int i = 0; i < not_sorted.Count; i++)
                         {
-                            try
+                            try//если работает вносим его
                             {
                                 result[not_sorted[i]]++;
                             }
-                            catch (KeyNotFoundException)
+                            catch (KeyNotFoundException)//если ловим исключение добавляем единицу существующему значению
                             {
                                 result.Add(not_sorted[i], 1);
                             }
                         }
-                        foreach(var i in result)
+                        foreach(var i in result)//выводим
                         {
                             Console.WriteLine(i);
                         }
                         Console.WriteLine($"Общее количество символов в тексте: {not_sorted.Count}");
                         Console.ReadLine();
-                        state = Nav_state.state_base;
+                        state = Nav_state.state_base;//меняем стейт на базовый
                         break;
 
-                    case Nav_state.state_sorted_replace:
-                        char what;
-                        char to;
+                    case Nav_state.state_sorted_replace://замена символов в тексте
+                        char what;//что нужно менять
+                        char to;// на что нужно изменить
                         Console.WriteLine("Введите какой символ нужно изменить");
                         what = Convert.ToChar(Console.ReadLine());
-                        int what1; dict2.TryGetValue(what, out what1);
+                        int what1; dict2.TryGetValue(what, out what1);//ловим индекс буквы
                         Console.WriteLine("Введите на какой символ нужно изменить");
                         to = Convert.ToChar(Console.ReadLine());
-                        int to1; dict2.TryGetValue(to, out to1);
-                        int count = 0;
+                        int to1; dict2.TryGetValue(to, out to1);//ловим индекс буквы
+                        int count = 0;//счетчик
                         for (int i = 0; i < to_sorted.Count; i++)
                         {
-                            int tmp = to_sorted[i];
-                            if (tmp == what1)
+                            int tmp = to_sorted[i];//проходимся по всему списку
+                            if (tmp == what1)//увеличиваем счетчик на один если ловим истину
                             {
                                 count++;
                             }
                         }
-                        dict.Remove(what1);
-                        dict.Add(what1, to);
-                        dict2.Remove(what);
-                        dict2.Add(to, to1);
-                        Console.WriteLine($"Было заменено: {count}");
+                        dict.Remove(what1);//удаляем в словаре цифра буква, индекс
+                        dict.Add(what1, to);//вносим новый индекс и букву
+                        dict2.Remove(what);//удаляем в словаре буква цифра, букву
+                        dict2.Add(to, to1);//вносим новую букву и индекс
+                        Console.WriteLine($"Было заменено: {count}");//выводим количество заменённых букв
                         Console.ReadLine();
-                        state = Nav_state.state_base;
+                        state = Nav_state.state_base;//меняем стейт на базовый
                         break;
 
-                    case Nav_state.state_sorted_return:
+                    case Nav_state.state_sorted_return://возвращение оригинала
                         Console.WriteLine("Возврат оригинального текста");
-                        to_sorted.Clear();
-                        dict.Clear();
+                        to_sorted.Clear();//чистим массив для сортировки
+                        dict.Clear();// чистим словари
                         dict2.Clear();
+                        //Записываем словари заново.
                         #region Востановление словарей
                         tmp_key = 0;
                         tmp_value = 0;
@@ -402,31 +403,31 @@ namespace program
                                 tmp_value++;//увеличиваем значение на один
                             }
                         }
-                        tmp_key = 0;
+                        tmp_key = 0;//обнулем временные переменные
                         tmp_value = 0;
                         for (int i = 0; i < not_sorted.Count; i++)
                         {
-                            if ((dict2.ContainsValue(not_sorted[i]) == true))
+                            if ((dict2.ContainsValue(not_sorted[i]) == true))//при существовании ничего не делаем
                             {
                             }
                             else
                             {
-                                bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);
+                                bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);//если удалось добавить
                                 if (t == true)
                                 {
-                                    tmp_key++;
+                                    tmp_key++;//увеличиваем ключ на один
                                 }
-                                tmp_value++;
+                                tmp_value++;// еще увечиваем ключ
                             }
                         }
                         #endregion
-                        for (int i = 0; i < not_sorted.Count; i++)
+                        for (int i = 0; i < not_sorted.Count; i++)//создаем заново массив.
                         {
                             int value;
                             dict2.TryGetValue(not_sorted[i], out value);
                             to_sorted.Add(value);
                         }
-                        state = Nav_state.state_base;
+                        state = Nav_state.state_base;//возврат к базовому стейту
                         break;
                 }
             }
@@ -435,3 +436,6 @@ namespace program
 }
 
 #endregion
+
+
+
