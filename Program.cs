@@ -194,104 +194,208 @@ using System.Diagnostics;
 
 #region второе задание
 
+namespace program
 {
-    #region Получение строки, и ввод её в коллекцию.
-    string? source_text = Console.ReadLine();//получение строки от пользователя
-    while (source_text == "" || source_text == " ")//если ничего нету или там пробел просим ввести еще раз
+    internal class Program
     {
-        Console.WriteLine("Текста не найдено, введите текст: ");
-        source_text = Console.ReadLine();
-    }
-    Console.Clear();//очищаем консоль
-    Console.WriteLine($"Оригинал: {source_text}");//выводим оригинал
-    var not_sorted = new List<char>();//создаем коллекцию
-    foreach (char str in source_text)//вводим по одному символу
-    {
-        not_sorted.Add(str);
-    }
-    #endregion
-
-    #region Ввод в словарь и присвоение уникального индекса.
-    Dictionary<int, char> dict = new();//словарь цифра буква
-    int tmp_key = 0;
-    int tmp_value = 0;
-    for (int i = 0; i < not_sorted.Count; i++)//начинаем цикл по длине не сортированного листа
-    {
-        if (dict.ContainsValue(not_sorted[i]) == true)//если элемент уже существует
+        enum Nav_state
         {
-
-            tmp_value++;//увеличиваем значение на единицу
-
+            state_base,
+            state_sorted_up,
+            state_sorted_down,
+            state_sorted_return,
+            state_sorted_work,
+            state_sorted_replace,
+            state_sorted_count
         }
-        else//если элемента не существует
+
+
+        static void Main()
         {
-            dict.TryAdd(tmp_key, not_sorted[tmp_value]);//добавляем его в словарь
-            tmp_key++;//увеличиваем ключ на один
-            tmp_value++;//увеличиваем значение на один
+            Nav_state state = Nav_state.state_base;
+            #region Получение строки, и ввод её в коллекцию.
+            string? source_text = Console.ReadLine();//получение строки от пользователя
+            while (source_text == "" || source_text == " ")//если ничего нету или там пробел просим ввести еще раз
+            {
+                Console.WriteLine("Текста не найдено, введите текст: ");
+                source_text = Console.ReadLine();
+            }
+            Console.Clear();//очищаем консоль
+            var not_sorted = new List<char>();//создаем коллекцию
+            foreach (char str in source_text)//вводим по одному символу
+            {
+                not_sorted.Add(str);
+            }
+            #endregion
+
+            #region Ввод в словарь и присвоение уникального индекса.
+            Dictionary<int, char> dict = new();//словарь цифра буква
+            int tmp_key = 0;
+            int tmp_value = 0;
+            for (int i = 0; i < not_sorted.Count; i++)//начинаем цикл по длине не сортированного листа
+            {
+                if (dict.ContainsValue(not_sorted[i]) == true)//если элемент уже существует
+                {
+
+                    tmp_value++;//увеличиваем значение на единицу
+
+                }
+                else//если элемента не существует
+                {
+                    dict.TryAdd(tmp_key, not_sorted[tmp_value]);//добавляем его в словарь
+                    tmp_key++;//увеличиваем ключ на один
+                    tmp_value++;//увеличиваем значение на один
+                }
+            }
+            tmp_key = 0;
+            tmp_value = 0;
+            Dictionary<char, int> dict2 = new();//словарь буква цифра
+            for (int i = 0; i < not_sorted.Count; i++)
+            {
+                if ((dict2.ContainsValue(not_sorted[i]) == true))
+                {
+                }
+                else
+                {
+                    bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);
+                    if (t == true)
+                    {
+                        tmp_key++;
+                    }
+                    tmp_value++;
+                }
+            }
+
+
+
+            #endregion
+
+            #region Конвертация букв в индекс
+            List<int> to_sorted = new List<int>();
+            List<int> to_output = new List<int>();
+            for (int i = 0; i < not_sorted.Count; i++)
+            {
+                int value;
+                dict2.TryGetValue(not_sorted[i], out value);
+                to_sorted.Add(value);
+            }
+            #endregion
+
+            while (true)
+            {
+                switch (state)
+                {
+
+                    case Nav_state.state_base:
+                        Console.Clear();
+                        Console.WriteLine($"Оригинал: {source_text}");//выводим оригинал
+                        #region Конвертация индекса в буквы и его вывод
+                        Console.Write("Текущее состояние: ");
+                        to_output.Clear();
+                        for (int i = 0; i < to_sorted.Count; i++)
+                        {
+                            char value;
+                            dict.TryGetValue(to_sorted[i], out value);
+                            to_output.Add(value);
+                        }
+                        foreach (char c in to_output)
+                        {
+                            Console.Write(c);
+                        }
+                        #endregion
+                        Console.WriteLine("");
+                        Console.WriteLine("Выберете нужную операцию.");
+                        Console.WriteLine("1. Сортировка по возрастанию.");
+                        Console.WriteLine("2. Сортировка по убыванию.");
+                        Console.WriteLine("3. Подсчет количества символов в тексте");
+                        Console.WriteLine("4. Заменя символов в тексте");
+                        Console.WriteLine("5. Возвращение оригинального текста.");
+                        var vibor = Console.ReadLine();
+                        if (vibor == "1") { state = Nav_state.state_sorted_up; }
+                        else if (vibor == "2") { state = Nav_state.state_sorted_down; }
+                        else if (vibor == "5") { state = Nav_state.state_sorted_return; }
+                        else if (vibor == "4") { state = Nav_state.state_sorted_replace; }
+                        else if (vibor == "3") { state = Nav_state.state_sorted_count; }
+                        else { Console.WriteLine("Неверное значение, допустимы только 1,2,3,4"); }
+                        break;
+                        
+                    case Nav_state.state_sorted_up:
+                        Console.WriteLine("Сортировка по возрастанию");
+                        to_sorted.Sort();
+                        state = Nav_state.state_base;
+                        break;
+
+                    case Nav_state.state_sorted_down:
+                        Console.WriteLine("Сортировка по Убыванию");
+                        to_sorted.Sort();
+                        to_sorted.Reverse();
+                        state = Nav_state.state_base;
+                        break;
+
+                    case Nav_state.state_sorted_count:
+                        Dictionary<char, int> result = new Dictionary<char, int>();
+                        for (int i = 0; i < not_sorted.Count; i++)
+                        {
+                            try
+                            {
+                                result[not_sorted[i]]++;
+                            }
+                            catch (KeyNotFoundException)
+                            {
+                                result.Add(not_sorted[i], 1);
+                            }
+                        }
+                        foreach(var i in result)
+                        {
+                            Console.WriteLine(i);
+                        }
+                        Console.WriteLine($"Общее количество символов в тексте: {not_sorted.Count}");
+                        Console.ReadLine();
+                        state = Nav_state.state_base;
+                        break;
+
+                    case Nav_state.state_sorted_replace:
+                        char what;
+                        char to;
+                        Console.WriteLine("Введите какой символ нужно изменить");
+                        what = Convert.ToChar(Console.ReadLine());
+                        int what1; dict2.TryGetValue(what, out what1);
+                        Console.WriteLine("Введите на какой символ нужно изменить");
+                        to = Convert.ToChar(Console.ReadLine());
+                        int to1; dict2.TryGetValue(to, out to1);
+                        int count = 0;
+                        for (int i = 0; i < to_sorted.Count; i++)
+                        {
+                            int tmp = to_sorted[i];
+                            if (tmp == what1)
+                            {
+                                count++;
+                            }
+                        }
+                        dict.Remove(what1);
+                        dict.Add(what1, to);
+                        dict2.Remove(what);
+                        dict2.Add(to, to1);
+                        Console.WriteLine($"Было заменено: {count}");
+                        Console.ReadLine();
+                        state = Nav_state.state_base;
+                        break;
+
+                    case Nav_state.state_sorted_return:
+                        Console.WriteLine("Возврат оригинального текста");
+                        to_sorted.Clear();
+                        for (int i = 0; i < not_sorted.Count; i++)
+                        {
+                            int value;
+                            dict2.TryGetValue(not_sorted[i], out value);
+                            to_sorted.Add(value);
+                        }
+                        state = Nav_state.state_base;
+                        break;
+                }
+            }
         }
-    }
-    tmp_key = 0;
-    tmp_value = 0;
-    Dictionary<char, int> dict2 = new();//словарь буква цифра
-    for (int i = 0; i < not_sorted.Count; i++)
-    {
-        dict2.TryAdd(not_sorted[tmp_value], tmp_key);
-        tmp_key++;
-        tmp_value++;
-    }
-
-
-
-    #endregion
-
-
-/*    Dictionary<char, int> dict2 = new();
-    dict2.OrderBy(x => x.Value);
-
-    var order = from i in dict.Values
-                orderby i ascending
-                select i;
-
-
-    List<(int, char)> korteg1 = new List<(int, char)>();//хранить до семи типов
-    korteg1.Add((15, 'k'));//добавлять так.
-    korteg1.OrderBy(x => x.Item1);//сортировка
-
-    List<object> korteg2 = new List<object>();
-    korteg2.Add((15));
-    korteg2.Add('t');
-    korteg2.AddRange(korteg1.Cast<object>());
-    foreach (object c in korteg2)
-    {
-        Console.WriteLine(c);
-        if (c.GetType() == typeof(Int32))
-        {
-            Console.WriteLine(c.GetType().Name);
-            int? tmp = c as Int32?;
-        }
-        else
-        {
-            Console.WriteLine("Хз чё за тип");
-        }
-    }*/
-
-
-    Console.WriteLine("Не сортированный");
-    foreach (char str in not_sorted)
-    {
-        Console.WriteLine(str);
-    }
-
-    Console.WriteLine("Уникальные индексы цифр");
-    foreach (var v in dict)
-    {
-        Console.WriteLine(v);
-    }
-
-    Console.WriteLine("Уникальные индексы букв");
-    foreach (var v in dict2)
-    {
-        Console.WriteLine(v);
     }
 }
-#endregion 
+
+#endregion
