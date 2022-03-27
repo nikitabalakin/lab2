@@ -266,8 +266,6 @@ namespace program
                 }
             }
 
-
-
             #endregion
 
             #region Конвертация букв в индекс
@@ -384,6 +382,44 @@ namespace program
                     case Nav_state.state_sorted_return:
                         Console.WriteLine("Возврат оригинального текста");
                         to_sorted.Clear();
+                        dict.Clear();
+                        dict2.Clear();
+                        #region Востановление словарей
+                        tmp_key = 0;
+                        tmp_value = 0;
+                        for (int i = 0; i < not_sorted.Count; i++)//начинаем цикл по длине не сортированного листа
+                        {
+                            if (dict.ContainsValue(not_sorted[i]) == true)//если элемент уже существует
+                            {
+
+                                tmp_value++;//увеличиваем значение на единицу
+
+                            }
+                            else//если элемента не существует
+                            {
+                                dict.TryAdd(tmp_key, not_sorted[tmp_value]);//добавляем его в словарь
+                                tmp_key++;//увеличиваем ключ на один
+                                tmp_value++;//увеличиваем значение на один
+                            }
+                        }
+                        tmp_key = 0;
+                        tmp_value = 0;
+                        for (int i = 0; i < not_sorted.Count; i++)
+                        {
+                            if ((dict2.ContainsValue(not_sorted[i]) == true))
+                            {
+                            }
+                            else
+                            {
+                                bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);
+                                if (t == true)
+                                {
+                                    tmp_key++;
+                                }
+                                tmp_value++;
+                            }
+                        }
+                        #endregion
                         for (int i = 0; i < not_sorted.Count; i++)
                         {
                             int value;
