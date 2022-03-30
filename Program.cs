@@ -191,7 +191,7 @@ using System.Diagnostics;
 }
 */
 #endregion
-
+/*
 #region второе задание
 
 namespace program//Пространство имён
@@ -252,10 +252,7 @@ namespace program//Пространство имён
             Dictionary<char, int> dict2 = new();//словарь буква цифра
             for (int i = 0; i < not_sorted.Count; i++)
             {
-                if ((dict2.ContainsValue(not_sorted[i]) == true))//если буква уже содержится нечего не делаем
-                {
-                }
-                else//если буквы нету добавляем её в словарь
+                if (dict2.ContainsValue(not_sorted[i]) == false)//если буква уже содержится нечего не делаем
                 {
                     bool t = dict2.TryAdd(not_sorted[tmp_value], tmp_key);//если удалось добавить букву увеличиваем ключ на один
                     if (t == true)
@@ -314,7 +311,7 @@ namespace program//Пространство имён
                         else if (vibor == "5") { state = Nav_state.state_sorted_return; }
                         else if (vibor == "4") { state = Nav_state.state_sorted_replace; }
                         else if (vibor == "3") { state = Nav_state.state_sorted_count; }
-                        else { Console.WriteLine("Неверное значение, допустимы только 1,2,3,4"); }
+                        else { Console.WriteLine("Неверное значение, допустимы только 1,2,3,4,5"); }
                         break;//выходим отсюдаво
                         
                     case Nav_state.state_sorted_up://при сортировке на возрастание
@@ -436,6 +433,6 @@ namespace program//Пространство имён
 }
 
 #endregion
-
+*/
 
 
