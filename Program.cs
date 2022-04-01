@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using static program3.Program;
 #region Первое задание
 /*
 {
@@ -436,3 +438,37 @@ namespace program//Пространство имён
 */
 
 
+namespace program3
+{
+
+    internal class Program
+    {
+        static void Main()
+        {
+            Console.WriteLine("Какой длины будет массив?");
+            int dlina_mas = Convert.ToInt32(Console.ReadLine());
+            object[,] mas = new object[4, dlina_mas];
+            List<int> list = new List<int>();
+            for (int i = 0; i < dlina_mas; i++)
+            {
+                list.Add(i);
+            }
+            LinkedList<int> spisok = new LinkedList<int>(list);
+            Console.WriteLine(spisok.Count);
+            Console.WriteLine(spisok.First?.Value);
+            Console.WriteLine(spisok.Last?.Value);
+
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < dlina_mas; j++)
+                {
+                    Console.Write(mas[i,j]);
+                    Console.Write(".");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
