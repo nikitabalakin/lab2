@@ -453,15 +453,74 @@ namespace program3
             {
                 list.Add(i);
             }
+            //Вывод объектов
+            Console.WriteLine("Объекты");
+            foreach(int i in list)
+            {
+                Console.Write($"{i} ");
+            }
+            Stack<int> stack = new Stack<int>(list);
             LinkedList<int> spisok = new LinkedList<int>(list);
-            Console.WriteLine(spisok.Count);
-            Console.WriteLine(spisok.First?.Value);
-            Console.WriteLine(spisok.Last?.Value);
 
+            #region Заполнение массива
+            for (int i = 0; i < list.Count; i++)//Номера объектов
+            {
+                mas[0, i] = i;
+            }
+            foreach(int i in list)//Впереди стоящие объекты
+            {
+                if (i < stack.Count-1)
+                {
+                    mas[1,i] = i+1;
+                }
+            }
+            foreach(int i in list)//позади стоящие объекты
+            {
+                if (i != 0 && i > 0 && i != list.Count)
+                {
+                    mas[2,i] = i-1;
+                }
+            }
+            for(int i = 0; i < list.Count; i++)//С кем объект когда либо был связан
+            {
+                int t = i;
+                int p;
+                p = 0;
+                if (i != list.Count)
+                {
+                    p = i + 1;
+                }
+                string tst ="";
+                if (p == dlina_mas)
+                {
+                    break;
+                }
+                tst = $" Объект: {i} стоит перед объектом: {p}";
+                _ = (string)(mas[3, i] = tst);
+            }
+            #endregion
 
-
+            #region Вывод массива
+            Console.WriteLine();
+            Console.WriteLine("Массив");
             for (int i = 0; i < 4; i++)
             {
+                if(i == 0)
+                {
+                    Console.WriteLine("Номер объекта");
+                }
+                else if(i == 1)
+                {
+                    Console.WriteLine("Вывод впереди стоящих объектов");
+                }
+                else if(i == 2)
+                {
+                    Console.WriteLine("Вывод позади стоящих объектов");
+                }
+                else if(i == 3)
+                {
+                    Console.WriteLine("С кем объект когда либо был связан");
+                }
                 for (int j = 0; j < dlina_mas; j++)
                 {
                     Console.Write(mas[i,j]);
@@ -469,6 +528,113 @@ namespace program3
                 }
                 Console.WriteLine();
             }
+            #endregion
+
+            bool link = false;
+            bool work = true;
+            #region Рабочее пространство
+            while (work)
+            {
+                Console.WriteLine("Меню");
+                Console.WriteLine("1. Изменить связь на множественную.");
+                Console.WriteLine("2. Изменить связь на один к одному.");
+                Console.WriteLine("3. Вывод результата");
+                string menu = Console.ReadLine();
+                int menu1 = Convert.ToInt32(menu);
+                if (string.IsNullOrWhiteSpace(menu) == false && (menu1 == 1 || menu1 == 2 || menu1 == 3))
+                {
+                    if (menu1 == 1)
+                    {
+                        if (link == false)
+                        {
+                            for (int i = 0; i < list.Count; i++)//С кем объект когда либо был связан
+                            {
+                                int firts = i;
+                                int second = i+1;
+                                int three = i - 1;
+                                string fs = "";
+                                fs = $"Объект: {firts} стоит перед объектом: {second}";
+                                if (firts == 0)
+                                {
+                                    mas[3, 0] = fs;
+                                }
+                                else
+                                {
+                                    string tfs = "";
+                                    tfs = $"Перед: {firts} Стоит: {three}, после {second}";
+                                    mas[3, i] = tfs;
+                                }
+                            }
+                            for (int j = 0; j < dlina_mas-1; j++)
+                            {
+                                Console.WriteLine(mas[3, j]);
+                            }
+                            link = true;
+                        }
+                        else if (link)
+                        {
+                            Console.WriteLine("Уже множественные связи");
+                        }
+                    }
+                    else if (menu1 == 2)
+                    {
+                        if (link == false)
+                        {
+                            Console.WriteLine("Уже связь один к одному");
+                        }
+                        else if (link)
+                        {
+                            for (int i = 0; i < list.Count; i++)//С кем объект когда либо был связан
+                            {
+                                int t = i;
+                                int p;
+                                p = 0;
+                                if (i != list.Count)
+                                {
+                                    p = i + 1;
+                                }
+                                string tst = "";
+                                if (p == dlina_mas)
+                                {
+                                    break;
+                                }
+                                tst = $" Объект: {i} стоит перед объектом: {p}";
+                                _ = (string)(mas[3, i] = tst);
+                            }
+                            for (int j = 0; j < dlina_mas-1; j++)
+                            {
+                                Console.WriteLine(mas[3, j]);
+                            }
+                            link = false;
+                        }
+                    }
+                    else if(menu1 == 3)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Связанные объекты");
+                        foreach(int i in stack)
+                        {
+                            Console.WriteLine(i);
+                        }
+                        Console.WriteLine("Объекты без связи");
+                        foreach(int i in list)
+                        {
+                            Console.WriteLine(i);
+                        }
+                        Console.WriteLine("Объекты с множественной связью");
+                        foreach(int i in spisok)
+                        {
+                            Console.WriteLine(i);
+                        }
+                        work = false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Только пункты меню");
+                }
+            }
+            #endregion
         }
     }
 }
