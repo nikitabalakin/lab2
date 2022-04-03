@@ -447,20 +447,20 @@ namespace program3
         {
             Console.WriteLine("Какой длины будет массив?");
             int dlina_mas = Convert.ToInt32(Console.ReadLine());
-            object[,] mas = new object[4, dlina_mas];
-            List<int> list = new List<int>();
-            for (int i = 0; i < dlina_mas; i++)
+            object[,] mas = new object[4, dlina_mas];//создаем массив с заданной длиной
+            List<int> list = new List<int>();//создаем лист для будущих операций
+            for (int i = 0; i < dlina_mas; i++)//заполняем лист
             {
                 list.Add(i);
             }
             //Вывод объектов
             Console.WriteLine("Объекты");
-            foreach(int i in list)
+            foreach(int i in list)//
             {
                 Console.Write($"{i} ");
             }
-            Stack<int> stack = new Stack<int>(list);
-            LinkedList<int> spisok = new LinkedList<int>(list);
+            Stack<int> stack = new Stack<int>(list);//создаем стек на основе листа
+            LinkedList<int> spisok = new LinkedList<int>(list);//создаем связанный список на основе листа
 
             #region Заполнение массива
             for (int i = 0; i < list.Count; i++)//Номера объектов
@@ -505,19 +505,19 @@ namespace program3
             Console.WriteLine("Массив");
             for (int i = 0; i < 4; i++)
             {
-                if(i == 0)
+                if(i == 0)//при первом проходе выводим номер, после сами элементы
                 {
                     Console.WriteLine("Номер объекта");
                 }
-                else if(i == 1)
+                else if(i == 1)//при втором спереди стоящие
                 {
                     Console.WriteLine("Вывод впереди стоящих объектов");
                 }
-                else if(i == 2)
+                else if(i == 2)//при третьем позади стоящие
                 {
                     Console.WriteLine("Вывод позади стоящих объектов");
                 }
-                else if(i == 3)
+                else if(i == 3)//при четвертом проходе с кем связан
                 {
                     Console.WriteLine("С кем объект когда либо был связан");
                 }
@@ -530,8 +530,8 @@ namespace program3
             }
             #endregion
 
-            bool link = false;
-            bool work = true;
+            bool link = false;//отображение связи
+            bool work = true;//для выхода
             #region Рабочее пространство
             while (work)
             {
@@ -543,51 +543,51 @@ namespace program3
                 int menu1 = Convert.ToInt32(menu);
                 if (string.IsNullOrWhiteSpace(menu) == false && (menu1 == 1 || menu1 == 2 || menu1 == 3))
                 {
-                    if (menu1 == 1)
+                    if (menu1 == 1)//меняем связь на множественную
                     {
-                        if (link == false)
+                        if (link == false)//проверяем линк, если он выключен значит связь не множественная
                         {
                             for (int i = 0; i < list.Count; i++)//С кем объект когда либо был связан
                             {
-                                int firts = i;
-                                int second = i+1;
-                                int three = i - 1;
+                                int firts = i;//сам элемент
+                                int second = i+1;//стоящий перед ним 
+                                int three = i - 1;//стоящий позади него 
                                 string fs = "";
                                 fs = $"Объект: {firts} стоит перед объектом: {second}";
-                                if (firts == 0)
+                                if (firts == 0)//перед нулем не кто не стоит
                                 {
                                     mas[3, 0] = fs;
                                 }
                                 else
                                 {
                                     string tfs = "";
-                                    tfs = $"Перед: {firts} Стоит: {three}, после {second}";
-                                    mas[3, i] = tfs;
+                                    tfs = $"Перед: {firts} Стоит: {three}, после {second}";//склеиваем франкенштейна
+                                    mas[3, i] = tfs;//вносим его в массив
                                 }
                             }
-                            for (int j = 0; j < dlina_mas-1; j++)
+                            for (int j = 0; j < dlina_mas-1; j++)//выводим связи
                             {
                                 Console.WriteLine(mas[3, j]);
                             }
-                            link = true;
+                            link = true;//переключаем связи
                         }
-                        else if (link)
+                        else if (link)//если линк включен значит связь уже множественная
                         {
                             Console.WriteLine("Уже множественные связи");
                         }
                     }
-                    else if (menu1 == 2)
+                    else if (menu1 == 2)// меняем связь на один к одному
                     {
-                        if (link == false)
+                        if (link == false)// если линк выключен значит связь уже один ко дному
                         {
                             Console.WriteLine("Уже связь один к одному");
                         }
-                        else if (link)
+                        else if (link)// если линк включен значит связь множественная
                         {
                             for (int i = 0; i < list.Count; i++)//С кем объект когда либо был связан
                             {
-                                int t = i;
-                                int p;
+                                int t = i;//элемент
+                                int p;//стоящий спереди элемент
                                 p = 0;
                                 if (i != list.Count)
                                 {
@@ -598,38 +598,38 @@ namespace program3
                                 {
                                     break;
                                 }
-                                tst = $" Объект: {i} стоит перед объектом: {p}";
-                                _ = (string)(mas[3, i] = tst);
+                                tst = $" Объект: {i} стоит перед объектом: {p}";//опять собираем пазл
+                                _ = (string)(mas[3, i] = tst);// заполняем пазл
                             }
-                            for (int j = 0; j < dlina_mas-1; j++)
+                            for (int j = 0; j < dlina_mas-1; j++)//выводим
                             {
                                 Console.WriteLine(mas[3, j]);
                             }
                             link = false;
                         }
                     }
-                    else if(menu1 == 3)
+                    else if(menu1 == 3)//если выходим 
                     {
                         Console.Clear();
                         Console.WriteLine("Связанные объекты");
-                        foreach(int i in stack)
+                        foreach(int i in stack)//выводим стек
                         {
                             Console.WriteLine(i);
                         }
                         Console.WriteLine("Объекты без связи");
-                        foreach(int i in list)
+                        foreach(int i in list)//выводим лист
                         {
                             Console.WriteLine(i);
                         }
                         Console.WriteLine("Объекты с множественной связью");
-                        foreach(int i in spisok)
+                        foreach(int i in spisok)//выводим связанный список
                         {
                             Console.WriteLine(i);
                         }
-                        work = false;
+                        work = false;//выключаем работу
                     }
                 }
-                else
+                else//если что-то иное
                 {
                     Console.WriteLine("Только пункты меню");
                 }
